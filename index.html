@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Saturday Mat | Yoga with Jenny — Oceanside, CA</title>
+<meta name="description" content="A welcoming Saturday morning yoga practice in Downtown Oceanside, CA. Beginner-friendly, no experience needed." />
+<meta name="theme-color" content="#F3E7D3" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+<!--
+╔══════════════════════════════════════════════════════════════════════╗
+║  PLACEHOLDERS TO REPLACE BEFORE GOING LIVE                         ║
+║  ────────────────────────────────────────────────────────────────── ║
+║  Search (Ctrl/Cmd+F) for each term to jump to it:                  ║
+║                                                                    ║
+║  "REPLACE: API_DOMAIN"       → Ask Devin for the backend API URL   ║
+║  "REPLACE: real email"       → Jenny's actual email address        ║
+║  "REPLACE: class style"      → e.g. "Vinyasa flow," "Slow flow"    ║
+║  "REPLACE: price"            → Drop-in rate once Jenny sets it     ║
+║  "REPLACE: cancellation policy"                                    ║
+║  "REPLACE: real Instagram"   → Instagram handle                    ║
+╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — warm coastal. Sand and shell for light,
+   sea-glass teal to ground it, one sunrise coral accent.
+   ============================================================ */
+:root{
+  --sand:     #F3E7D3;
+  --shell:    #FBF6EB;
+  --ink:      #3B2F22;
+  --ink-soft: #7A6A55;
+  --seaglass: #6E9A90;
+  --deepsea:  #2E4A45;
+  --coral:    #DE7C50;
+  --line:     rgba(59,47,34,.16);
+
+  --display: "Fraunces", Georgia, serif;
+  --body:    "Karla", system-ui, sans-serif;
+
+  --gutter: clamp(20px, 5vw, 72px);
+  --maxw: 1080px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
+body{
+  margin:0; background:var(--sand); color:var(--ink);
+  font-family:var(--body); font-size:clamp(16px,1.05vw,18px); line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+:focus-visible{ outline:2.5px solid var(--coral); outline-offset:3px; border-radius:2px; }
+
+.wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:var(--gutter); }
+
+.eyebrow{
+  font-family:var(--body); font-size:12.5px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--seaglass); margin:0 0 16px;
+}
+
+h1,h2,h3{ font-family:var(--display); font-weight:600; letter-spacing:-.01em; line-height:1.06; margin:0; color:var(--ink); }
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  font-family:var(--body); font-size:15px; font-weight:700;
+  padding:15px 30px; border-radius:999px;
+  text-decoration:none; border:1.5px solid transparent; cursor:pointer;
+  transition:background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.btn-lg{ padding:19px 40px; font-size:16.5px; }
+.btn-coral{ background:var(--coral); color:var(--shell); }
+.btn-coral:hover{ background:var(--ink); transform:translateY(-1px); }
+.btn-outline{ background:transparent; color:var(--ink); border-color:var(--ink); }
+.btn-outline:hover{ background:var(--ink); color:var(--shell); }
+
+/* ---------- Header ---------- */
+.masthead{
+  position:sticky; top:0; z-index:60;
+  background:color-mix(in srgb,var(--sand) 90%,transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+}
+.masthead-in{ display:flex; align-items:center; gap:24px; height:76px; }
+.wordmark{ text-decoration:none; margin-right:auto; color:var(--ink); line-height:1.15; }
+.wordmark .brand{ display:block; font-family:var(--display); font-weight:600; font-size:19px; letter-spacing:.01em; }
+.wordmark .sub{ display:block; font-family:var(--body); font-size:11px; font-weight:600; letter-spacing:.06em; color:var(--ink-soft); }
+.nav{ display:flex; gap:26px; }
+.nav a{ font-family:var(--body); font-size:14.5px; font-weight:600; text-decoration:none; color:var(--ink-soft); padding:4px 0; border-bottom:2px solid transparent; }
+.nav a:hover{ color:var(--ink); border-bottom-color:var(--coral); }
+.masthead .btn{ padding:11px 22px; font-size:13.5px; }
+@media (max-width:780px){ .nav{ display:none; } }
+
+/* ---------- Hero ---------- */
+.hero{ padding:clamp(56px,8vw,96px) 0 0; background:linear-gradient(180deg, #F7ECDB 0%, var(--sand) 100%); }
+.hero-grid{ display:grid; gap:clamp(32px,5vw,56px); align-items:center; padding-bottom:clamp(48px,7vw,80px); }
+@media (min-width:900px){ .hero-grid{ grid-template-columns:1.05fr .95fr; } }
+.brandmark{ font-family:var(--display); font-weight:600; font-size:clamp(38px,6.5vw,64px); letter-spacing:-.01em; margin-bottom:14px; }
+.tagline{ font-family:var(--body); font-size:clamp(16px,1.7vw,19px); font-weight:600; color:var(--ink-soft); margin-bottom:22px; }
+.hero-hook{ font-family:var(--display); font-style:italic; font-weight:400; font-size:clamp(20px,2.6vw,28px); color:var(--coral); margin:0 0 10px; }
+.hero-lede{ font-size:clamp(16px,1.6vw,18.5px); max-width:46ch; color:var(--ink-soft); margin:0 0 32px; }
+.hero-cta{ display:flex; flex-direction:column; align-items:flex-start; gap:16px; }
+.next-class{
+  display:inline-flex; align-items:center; gap:10px; font-family:var(--body);
+  font-size:14.5px; font-weight:600; color:var(--ink);
+  background:var(--shell); border:1px solid var(--line); border-radius:999px; padding:10px 18px 10px 14px;
+}
+.next-class .dot{ width:8px; height:8px; border-radius:999px; background:var(--coral); flex:none; }
+.hero-photo{
+  aspect-ratio:4/5; border-radius:8px; overflow:hidden;
+}
+.hero-photo img{ width:100%; height:100%; object-fit:cover; }
+
+/* load-in — the one animation on this page */
+.rise{ opacity:0; transform:translateY(16px); animation:rise .8s cubic-bezier(.2,.7,.3,1) forwards; }
+.rise:nth-child(2){ animation-delay:.1s; }
+.rise:nth-child(3){ animation-delay:.2s; }
+@keyframes rise{ to{ opacity:1; transform:none; } }
+
+.wave{ display:block; width:100%; height:auto; }
+.wave path{ fill:var(--shell); }
+.wave-flip path{ fill:var(--deepsea); }
+
+/* ---------- Section shells ---------- */
+.section{ padding:clamp(56px,8vw,100px) 0; background:var(--shell); }
+.section-sand{ background:var(--sand); }
+.section-head{ margin-bottom:clamp(32px,5vw,52px); max-width:58ch; }
+.section-head h2{ font-size:clamp(28px,4.2vw,44px); margin-bottom:14px; }
+.section-head p{ margin:0; color:var(--ink-soft); font-size:clamp(16px,1.4vw,18px); }
+
+/* ---------- Class details card ---------- */
+.details{ background:var(--sand); border:1px solid var(--line); border-radius:6px; max-width:600px; overflow:hidden; }
+.section-sand .details{ background:var(--shell); }
+.d-row{ display:flex; justify-content:space-between; align-items:center; gap:20px; padding:18px 26px; border-bottom:1px solid var(--line); }
+.d-row:last-child{ border-bottom:none; }
+.d-label{ font-family:var(--body); font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); }
+.d-value{ font-family:var(--display); font-size:19px; font-weight:500; text-align:right; }
+.d-row.is-offer{ background:color-mix(in srgb, var(--coral) 13%, transparent); }
+.d-row.is-offer .d-label{ color:var(--coral); }
+.d-row.is-offer .d-value{ font-weight:600; }
+
+/* ---------- About Jenny ---------- */
+.teacher{ display:grid; gap:clamp(28px,4vw,56px); align-items:start; }
+@media (min-width:860px){ .teacher{ grid-template-columns:.9fr 1.3fr; } }
+.portrait{
+  aspect-ratio:4/5; border-radius:6px; overflow:hidden;
+}
+.portrait img{ width:100%; height:100%; object-fit:cover; }
+.teacher-body h2{ font-size:clamp(28px,4vw,42px); margin-bottom:18px; }
+.teacher-body p{ color:var(--ink-soft); max-width:56ch; margin:0 0 14px; }
+.teacher-body p:last-of-type{ margin-bottom:0; }
+
+/* ---------- Location ---------- */
+.loc{ display:grid; gap:clamp(28px,4vw,56px); align-items:start; }
+@media (min-width:860px){ .loc{ grid-template-columns:1fr 1fr; } }
+.loc-media{
+  display:grid; gap:12px;
+}
+.loc-photo{
+  aspect-ratio:4/3; border-radius:6px; overflow:hidden;
+}
+.loc-photo img{ width:100%; height:100%; object-fit:cover; }
+.loc-video{
+  aspect-ratio:16/9; border-radius:6px; overflow:hidden;
+  background:var(--deepsea);
+  position:relative;
+}
+.loc-video video{ width:100%; height:100%; object-fit:cover; }
+.loc-video .play-overlay{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(46,74,69,0.3);
+  cursor:pointer;
+  transition:background .2s ease;
+}
+.loc-video .play-overlay:hover{ background:rgba(46,74,69,0.45); }
+.loc-video .play-overlay svg{ width:60px; height:60px; fill:var(--shell); opacity:0.9; }
+.loc-video .play-overlay.hidden{ display:none; }
+.loc-facts{ display:grid; gap:22px; }
+.loc-fact h3{ font-family:var(--body); font-weight:700; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--coral); margin-bottom:8px; }
+.loc-fact p{ margin:0; color:var(--ink-soft); font-size:16px; line-height:1.6; }
+
+/* ---------- Schedule + Booking ---------- */
+.book-wrap{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+.book-card{
+  background:var(--shell); border:1px solid var(--line); border-radius:8px;
+  max-width:480px; padding:clamp(32px,5vw,48px); text-align:center;
+}
+.book-card .brand-sm{ font-family:var(--display); font-weight:600; font-size:22px; margin-bottom:6px; }
+.book-card ul{ list-style:none; margin:0 0 28px; padding:0; display:grid; gap:6px; }
+.book-card li{ font-size:16px; color:var(--ink-soft); }
+.book-card li strong{ color:var(--ink); }
+.spots-badge{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--body); font-size:14px; font-weight:700;
+  padding:8px 16px; border-radius:999px;
+  margin-bottom:20px;
+}
+.spots-badge.available{ background:color-mix(in srgb, var(--seaglass) 15%, transparent); color:var(--seaglass); }
+.spots-badge.low{ background:color-mix(in srgb, var(--coral) 15%, transparent); color:var(--coral); }
+.spots-badge.full{ background:color-mix(in srgb, var(--ink) 10%, transparent); color:var(--ink-soft); }
+
+/* ---------- Sign-up ---------- */
+.signup-panel{ background:var(--sand); border:1px solid var(--line); border-radius:6px; padding:clamp(28px,4vw,44px); max-width:520px; margin-top:40px; text-align:left; }
+.section-sand .signup-panel{ background:var(--shell); }
+.field{ margin-bottom:20px; }
+.field label{ display:block; font-family:var(--body); font-size:13.5px; font-weight:700; margin-bottom:8px; color:var(--ink); }
+.field input{ width:100%; padding:13px 15px; font-family:var(--body); font-size:16px; border:1.5px solid var(--line); border-radius:5px; background:var(--shell); color:var(--ink); }
+.section-sand .field input{ background:var(--sand); }
+.field input:focus-visible{ border-color:var(--coral); }
+.field .hint{ font-size:13px; color:var(--ink-soft); margin-top:6px; }
+.signup-panel .btn{ width:100%; margin-top:6px; }
+.form-msg{ display:none; margin-top:20px; padding:16px 18px; border-radius:5px; font-size:15px; }
+.form-msg.is-visible{ display:block; }
+.form-msg.success{ background:color-mix(in srgb, var(--seaglass) 20%, transparent); border:1px solid var(--seaglass); color:var(--ink); }
+.form-msg.full{ background:color-mix(in srgb, var(--coral) 15%, transparent); border:1px solid var(--coral); color:var(--ink); }
+.form-msg.error{ background:color-mix(in srgb, var(--ink) 10%, transparent); border:1px solid var(--line); color:var(--ink); }
+.mailto-fallback{ margin-top:22px; font-size:14.5px; color:var(--ink-soft); text-align:center; }
+.mailto-fallback a{ color:var(--coral); font-weight:700; text-decoration:none; }
+.mailto-fallback a:hover{ text-decoration:underline; }
+
+/* ---------- FAQ ---------- */
+.faq{ border-top:1px solid var(--line); max-width:760px; }
+.faq details{ border-bottom:1px solid var(--line); padding:20px 0; }
+.faq summary{
+  cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:20px;
+  font-family:var(--display); font-weight:600; font-size:clamp(17px,2vw,20px);
+}
+.faq summary::-webkit-details-marker{ display:none; }
+.faq summary::after{ content:"+"; font-weight:400; font-size:22px; color:var(--coral); flex:none; line-height:1; }
+.faq details[open] summary::after{ content:"–"; }
+.faq p{ margin:14px 0 0; color:var(--ink-soft); max-width:62ch; }
+
+/* ---------- Stay Connected ---------- */
+.connect{ display:grid; gap:clamp(28px,4vw,56px); }
+@media (min-width:820px){ .connect{ grid-template-columns:1fr 1fr; } }
+.connect-block h3{ font-family:var(--display); font-size:22px; margin-bottom:12px; }
+.connect-block p{ color:var(--ink-soft); margin:0 0 18px; }
+.ig-link{ display:inline-flex; align-items:center; gap:8px; font-weight:700; color:var(--coral); text-decoration:none; }
+.ig-link:hover{ text-decoration:underline; }
+
+/* ---------- Footer ---------- */
+.footer{ background:var(--deepsea); color:color-mix(in srgb,var(--shell) 78%,transparent); padding:36px 0; text-align:center; }
+.footer p{ margin:0; font-family:var(--body); font-size:14.5px; letter-spacing:.02em; }
+.footer strong{ color:var(--shell); }
+</style>
+</head>
+
+<body>
+
+<a class="btn btn-coral" href="#schedule" style="position:absolute;left:-9999px;top:0;" onfocus="this.style.left='12px';this.style.top='12px';this.style.zIndex='99'" onblur="this.style.left='-9999px'">Skip to booking</a>
+
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <a class="wordmark" href="#top">
+      <span class="brand">Saturday Mat</span>
+      <span class="sub">Yoga with Jenny</span>
+    </a>
+    <nav class="nav">
+      <a href="#the-class">The Class</a>
+      <a href="#about">About Jenny</a>
+      <a href="#location">Location</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-coral" href="#schedule">Book a Class</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HOMEPAGE / HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow rise">Downtown Oceanside, California</p>
+        <h1 class="brandmark rise">Saturday Mat</h1>
+        <p class="hero-hook rise">Come as you are. Leave a little lighter.</p>
+        <p class="tagline rise">Yoga with Jenny in Oceanside, California</p>
+        <p class="hero-lede rise">A welcoming Saturday morning yoga practice designed to help you move, breathe, and start your weekend feeling good.</p>
+        <div class="hero-cta rise">
+          <a class="btn btn-coral btn-lg" href="#schedule">Book a Class</a>
+          <div class="next-class"><span class="dot"></span> Next class: Saturday • 10:30 AM • Downtown Oceanside</div>
+        </div>
+      </div>
+      <div class="hero-photo rise"><img src="images/hero.jpg" alt="Jenny in a yoga pose outdoors"></div>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,40 C 240,90 480,0 720,32 C 960,64 1200,10 1440,44 L1440,90 L0,90 Z"></path>
+    </svg>
+  </section>
+
+  <!-- THE CLASS -->
+  <section class="section" id="the-class">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The Class</p>
+        <h2>What to expect on your mat.</h2>
+        <p>Simple, welcoming, and built for exactly where you're at right now.</p>
+      </div>
+
+      <div class="details">
+        <div class="d-row">
+          <span class="d-label">Length</span>
+          <span class="d-value">60 minutes</span>
+        </div>
+        <div class="d-row">
+          <span class="d-label">Style</span>
+          <!-- REPLACE: class style -->
+          <span class="d-value">Vinyasa-inspired flow</span>
+        </div>
+        <div class="d-row">
+          <span class="d-label">Level</span>
+          <span class="d-value">Beginner-friendly</span>
+        </div>
+        <div class="d-row">
+          <span class="d-label">What to bring</span>
+          <span class="d-value">Mat &amp; water</span>
+        </div>
+        <div class="d-row">
+          <span class="d-label">Price</span>
+          <!-- REPLACE: price -->
+          <span class="d-value">$20 drop-in</span>
+        </div>
+        <div class="d-row is-offer">
+          <span class="d-label">Launch offer</span>
+          <span class="d-value">First 2 classes free — Aug 22 &amp; 29</span>
+        </div>
+      </div>
+
+      <p style="max-width:60ch; color:var(--ink-soft); margin-top:24px; font-size:16px;">
+        Modifications are encouraged, not just allowed — if a shape doesn't feel right in your body that day, Jenny will show you another way in.
+      </p>
+    </div>
+  </section>
+
+  <!-- ABOUT JENNY -->
+  <section class="section section-sand" id="about">
+    <div class="wrap">
+      <div class="teacher">
+        <div class="portrait">
+          <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=750&fit=crop&crop=face&auto=format" alt="Photo of Jenny" loading="lazy">
+        </div>
+        <div class="teacher-body">
+          <p class="eyebrow">About Jenny</p>
+          <h2>Hi, I'm Jenny.</h2>
+          <p>I'm a 200-hour certified yoga teacher with additional training in Yin Yoga. I created Saturday Mat because I wanted a space for yoga that feels approachable, supportive, and real.</p>
+          <p>You don't need to be flexible, experienced, or look a certain way to practice yoga. Just show up as you are.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="section" id="location">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Location</p>
+        <h2>Downtown Oceanside.</h2>
+        <p>At Cameron Fitness, right in the heart of downtown. Here's a look at the space — the video above shows the studio entrance on Pier View Way.</p>
+      </div>
+      <div class="loc">
+        <div class="loc-media">
+          <!-- Video of the studio / streetscape -->
+          <div class="loc-video" id="studioVideo">
+            <video id="studioVideoPlayer" preload="metadata" playsinline muted>
+              <source src="images/studio-tour.mp4" type="video/mp4">
+            </video>
+            <div class="play-overlay" id="videoOverlay" onclick="playVideo()">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <!-- Photo of the space -->
+          <div class="loc-photo">
+            <img src="images/hero.jpg" alt="The studio space" loading="lazy">
+          </div>
+        </div>
+        <div class="loc-facts">
+          <div class="loc-fact">
+            <h3>Address</h3>
+            <p>Cameron Fitness<br>302 Pier View Way, Oceanside, CA 92054</p>
+          </div>
+          <div class="loc-fact">
+            <h3>Parking</h3>
+            <p>Free on the street, plus metered spots nearby. There's also a lot right there if you'd rather not hunt for a spot — $5 flat.</p>
+          </div>
+          <div class="loc-fact">
+            <h3>Getting here</h3>
+            <p>Right off Coast Highway in downtown Oceanside, a block from the pier. You can see the blue and white awning — can't miss it.</p>
+          </div>
+          <div class="loc-fact">
+            <h3>Nearby</h3>
+            <p>Grab a coffee at One Love before class, or hit the farmers market after and make a morning of it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE + BOOKING -->
+  <section class="section section-sand" id="schedule">
+    <div class="wrap book-wrap">
+      <div class="section-head" style="text-align:center; max-width:52ch;">
+        <p class="eyebrow">Schedule + Booking</p>
+        <h2>Reserve your mat.</h2>
+      </div>
+
+      <div class="book-card">
+        <p class="brand-sm">Saturday Mat</p>
+        <!-- Live spots counter -->
+        <div class="spots-badge available" id="spotsBadge">
+          <span id="spotsCount">—</span> of 15 spots remaining
+        </div>
+        <ul>
+          <li><strong>Saturdays</strong> at 10:30 AM</li>
+          <li>Downtown Oceanside</li>
+          <li>60 minutes</li>
+        </ul>
+        <a class="btn btn-coral" href="#signup-form" style="width:100%;">Reserve Your Mat →</a>
+      </div>
+
+      <div class="signup-panel" id="signup-form">
+        <!--
+          REPLACE: API_DOMAIN — Ask Devin for the real backend URL.
+          The form POSTs to https://[API_DOMAIN]/book on submit,
+          and fetches spots from https://[API_DOMAIN]/spots on load.
+        -->
+        <form id="signupForm">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="phone">Phone <span style="font-weight:400;color:var(--ink-soft)">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel">
+            <p class="hint">In case we need to reach you before Saturday.</p>
+          </div>
+          <button type="submit" class="btn btn-coral">Reserve My Mat</button>
+        </form>
+        <div class="form-msg success" id="successMsg">You're on the list — see you Saturday at 10:30am.</div>
+        <div class="form-msg full" id="fullMsg">This Saturday's class is full. Check back next week or email Jenny to get on the waitlist.</div>
+        <div class="form-msg error" id="errorMsg">Something didn't go through. You can email Jenny directly below to reserve your spot.</div>
+
+        <p class="mailto-fallback">
+          Booking not working?
+          <!-- REPLACE: real email -->
+          <a href="mailto:hello@saturdaymat.com?subject=Saturday%2010%3A30am%20class&body=Hi%20Jenny%2C%20I%27d%20like%20to%20reserve%20a%20spot%20for%20Saturday%27s%2010%3A30am%20class.%0A%0AName%3A%0APhone%3A">Email us to reserve your spot</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2>Good questions.</h2>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>I've never done yoga. Can I come?</summary>
+          <p>Absolutely. Saturday Mat is built for exactly that. Jenny walks you through the basics as class goes — you're never expected to already know what's next.</p>
+        </details>
+        <details>
+          <summary>Do I need to bring a mat?</summary>
+          <p>Please bring your own mat and a water bottle if you can. If you don't have one, no worries — limited mats are available, just let us know ahead of time.</p>
+        </details>
+        <details>
+          <summary>Where do I park?</summary>
+          <p>Free on the street, or metered parking nearby. There's also a lot right at Cameron Fitness for $5 if you'd rather not hunt for a spot.</p>
+        </details>
+        <details>
+          <summary>How early should I arrive?</summary>
+          <p>Aim for 10–15 minutes early so you can get settled before class starts at 10:30.</p>
+        </details>
+        <details>
+          <summary>What should I wear?</summary>
+          <p>Anything you can move and breathe in — leggings, shorts, whatever you'd wear to work out.</p>
+        </details>
+        <details>
+          <summary>What's your cancellation policy?</summary>
+          <!-- REPLACE: cancellation policy -->
+          <p>Cancellation policy coming soon — for now, just email or text if your plans change.</p>
+        </details>
+        <details>
+          <summary>Can I drop in?</summary>
+          <p>Yes. No membership required to start — just reserve your spot for that Saturday and show up.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAY CONNECTED -->
+  <section class="section section-sand" id="connect">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Stay Connected</p>
+        <h2>Don't lose track of Saturday.</h2>
+      </div>
+      <div class="connect">
+        <div class="connect-block">
+          <h3>Follow along</h3>
+          <p>Class updates, schedule changes, and the occasional Saturday morning reminder.</p>
+          <!-- REPLACE: real Instagram -->
+          <a class="ig-link" href="https://instagram.com/saturdaymatyoga" target="_blank" rel="noopener">@saturdaymatyoga on Instagram →</a>
+        </div>
+        <div class="connect-block">
+          <h3>Join the list</h3>
+          <p>Get class reminders and updates straight to your inbox.</p>
+          <form id="listForm" class="list-form" style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="email" id="listEmail" placeholder="you@email.com" required aria-label="Email address" style="flex:1; min-width:200px; padding:13px 15px; font-family:var(--body); font-size:15px; border:1.5px solid var(--line); border-radius:5px; background:var(--shell);">
+            <button type="submit" class="btn btn-outline">Join</button>
+          </form>
+          <p class="list-success" style="display:none; margin-top:12px; font-size:14px; color:var(--seaglass); font-weight:700;" id="listSuccess">You're on the list!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p><strong>Saturday Mat</strong> | Yoga with Jenny | Oceanside, CA</p>
+</footer>
+
+<script>
+// ── Video player (for the studio tour video) ──
+function playVideo() {
+  const video = document.getElementById('studioVideoPlayer');
+  const overlay = document.getElementById('videoOverlay');
+  if (video) {
+    video.play();
+    overlay.classList.add('hidden');
+  }
+}
+
+// Icons
+const videoEl = document.getElementById('studioVideoPlayer');
+if (videoEl) {
+  videoEl.addEventListener('click', () => {
+    if (videoEl.paused) {
+      videoEl.play();
+      document.getElementById('videoOverlay').classList.add('hidden');
+    } else {
+      videoEl.pause();
+      document.getElementById('videoOverlay').classList.remove('hidden');
+    }
+  });
+  videoEl.addEventListener('ended', () => {
+    document.getElementById('videoOverlay').classList.remove('hidden');
+  });
+}
+
+// ── Spots counter (fetches from backend) ──
+// REPLACE: API_DOMAIN — ask Devin for the real URL
+const API_DOMAIN = 'https://api.saturdaymat.com';
+
+async function fetchSpots() {
+  const badge = document.getElementById('spotsBadge');
+  const count = document.getElementById('spotsCount');
+  try {
+    const res = await fetch(`${API_DOMAIN}/spots`, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const remaining = data.spots;
+    count.textContent = remaining;
+    badge.className = 'spots-badge';
+    if (remaining <= 0) {
+      badge.classList.add('full');
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('fullMsg').classList.add('is-visible');
+    } else if (remaining <= 3) {
+      badge.classList.add('low');
+    } else {
+      badge.classList.add('available');
+    }
+  } catch (err) {
+    // API not live yet — hide badge
+    badge.style.display = 'none';
+  }
+}
+fetchSpots();
+
+// ── Reservation form ──
+const form = document.getElementById('signupForm');
+const successMsg = document.getElementById('successMsg');
+const fullMsg = document.getElementById('fullMsg');
+const errorMsg = document.getElementById('errorMsg');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // Hide any previous messages
+  document.querySelectorAll('.form-msg').forEach(m => m.classList.remove('is-visible'));
+
+  const data = {
+    name: document.getElementById('name').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim()
+  };
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.textContent = 'Reserving…';
+  submitBtn.disabled = true;
+
+  try {
+    const res = await fetch(`${API_DOMAIN}/book`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data),
+      signal: AbortSignal.timeout(8000)
+    });
+
+    if (res.status === 409) {
+      // Class full
+      form.style.display = 'none';
+      fullMsg.classList.add('is-visible');
+    } else if (!res.ok) {
+      throw new Error('HTTP ' + res.status);
+    } else {
+      // Success
+      form.reset();
+      form.style.display = 'none';
+      successMsg.classList.add('is-visible');
+      // Refresh spots count
+      fetchSpots();
+    }
+  } catch (err) {
+    // API not live — fallback to mailto
+    submitBtn.textContent = 'Reserve My Mat';
+    submitBtn.disabled = false;
+
+    const body = `Hi Jenny,%0D%0A%0D%0AI'd like to reserve a spot for Saturday's 10:30am class.%0D%0A%0D%0AName: ${encodeURIComponent(data.name)}%0D%0AEmail: ${encodeURIComponent(data.email)}%0D%0APhone: ${encodeURIComponent(data.phone) || 'Not provided'}`;
+    window.location.href = `mailto:hello@saturdaymat.com?subject=Saturday%2010%3A30am%20class&body=${body}`;
+    // Show success message with note about email
+    form.reset();
+    form.style.display = 'none';
+    document.querySelector('#successMsg p')?.remove();
+    successMsg.innerHTML = 'We opened your email app so you can finish signing up. See you Saturday at 10:30am!';
+    successMsg.classList.add('is-visible');
+  }
+});
+
+// ── Mailing list form ──
+const listForm = document.getElementById('listForm');
+const listSuccess = document.getElementById('listSuccess');
+listForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('listEmail').value.trim();
+  if (!email) return;
+  try {
+    const res = await fetch(`${API_DOMAIN}/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+      signal: AbortSignal.timeout(5000)
+    });
+    if (res.ok) {
+      listForm.reset();
+      listSuccess.style.display = 'block';
+    }
+  } catch (err) {
+    // Silently fail — this is a nice-to-have
+    listForm.reset();
+    listSuccess.textContent = 'List not connected yet — we\'ll save your email locally.';
+    listSuccess.style.display = 'block';
+  }
+});
+
+// ── Register service worker for PWA ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js').then(() => {
+    // Registered
+  }).catch(() => {
+    // Service worker registration failed — offline browsing won't work
+  });
+}
+</script>
+</body>
+</html>
