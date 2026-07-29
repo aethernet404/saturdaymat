@@ -463,6 +463,11 @@ h1,h2,h3{ font-family:var(--display); font-weight:600; letter-spacing:-.01em; li
             <input type="email" id="email" name="email" required autocomplete="email">
           </div>
           <div class="field">
+            <label for="classDate">Class Date</label>
+            <select id="classDate" name="classDate" required></select>
+            <p class="hint">Saturdays at 10:30 AM. Upcoming dates only.</p>
+          </div>
+          <div class="field">
             <label for="phone">Phone <span style="font-weight:400;color:var(--ink-soft)">(optional)</span></label>
             <input type="tel" id="phone" name="phone" autocomplete="tel">
             <p class="hint">In case we need to reach you before Saturday.</p>
@@ -586,15 +591,48 @@ if (videoEl) {
 }
 
 // ── Spots counter (fetches from backend) ──
-// REPLACE: API_DOMAIN — ask Devin for the real URL
 const API_DOMAIN = 'https://api.saturdaymat.com';
+
+function getClassSaturdays(count) {
+  const now = new Date();
+  const next = new Date(now);
+  next.setHours(10, 30, 0, 0);
+  const day = now.getDay();
+  let daysUntil = (6 - day + 7) % 7;
+  if (daysUntil === 0 && now >= next) daysUntil = 7;
+  next.setHours(10, 30, 0, 0);
+  next.setDate(now.getDate() + daysUntil);
+  const pad = (n) => String(n).padStart(2, '0');
+  const dates = [];
+  for (let i = 0; i < count; i++) {
+    const d = new Date(next);
+    d.setDate(next.getDate() + 7 * i);
+    const value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    const label = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    dates.push({ value, label: `Saturday, ${label} at 10:30 AM` });
+  }
+  return dates;
+}
+
+function populateClassDates() {
+  const select = document.getElementById('classDate');
+  const dates = getClassSaturdays(6);
+  dates.forEach((d) => {
+    const opt = document.createElement('option');
+    opt.value = d.value;
+    opt.textContent = d.label;
+    select.appendChild(opt);
+  });
+}
 
 async function fetchSpots() {
   const badge = document.getElementById('spotsBadge');
   const count = document.getElementById('spotsCount');
   const cap = document.getElementById('spotsCapacity');
+  const select = document.getElementById('classDate');
+  const classDate = select ? select.value : '';
   try {
-    const res = await fetch(`${API_DOMAIN}/spots`, { signal: AbortSignal.timeout(5000) });
+    const res = await fetch(`${API_DOMAIN}/spots?classDate=${encodeURIComponent(classDate)}`, { signal: AbortSignal.timeout(5000) });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     const remaining = data.spots;
@@ -614,7 +652,10 @@ async function fetchSpots() {
     badge.style.display = 'none';
   }
 }
+
+populateClassDates();
 fetchSpots();
+document.getElementById('classDate').addEventListener('change', fetchSpots);
 
 // ── Reservation form ──
 const form = document.getElementById('signupForm');
@@ -632,7 +673,8 @@ form.addEventListener('submit', async (e) => {
   const data = {
     name: document.getElementById('name').value.trim(),
     email: document.getElementById('email').value.trim(),
-    phone: document.getElementById('phone').value.trim()
+    phone: document.getElementById('phone').value.trim(),
+    classDate: document.getElementById('classDate').value
   };
 
   const submitBtn = form.querySelector('button[type="submit"]');
