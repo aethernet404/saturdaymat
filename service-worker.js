@@ -1,4 +1,4 @@
-const CACHE = 'saturday-mat-v2';
+const CACHE = 'saturday-mat-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
