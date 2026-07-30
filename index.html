@@ -687,48 +687,60 @@ form.addEventListener('submit', async (e) => {
   submitBtn.textContent = 'Reserving…';
   submitBtn.disabled = true;
 
+  let res;
   try {
-    const res = await fetch(`${API_DOMAIN}/book`, {
+    res = await fetch(`${API_DOMAIN}/book`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(data),
       signal: createTimeoutSignal(8000)
     });
-
-    if (res.status === 409) {
-      // Class full (legacy)
-      form.style.display = 'none';
-      fullMsg.classList.add('is-visible');
-    } else if (!res.ok) {
-      throw new Error('HTTP ' + res.status);
-    } else {
-      const result = await res.json();
-      form.reset();
-      form.style.display = 'none';
-      if (result.alreadyBooked) {
-        (result.status === 'Waitlisted' ? waitlistMsg : successMsg).classList.add('is-visible');
-      } else if (result.status === 'Waitlisted') {
-        waitlistMsg.classList.add('is-visible');
-      } else {
-        successMsg.classList.add('is-visible');
-      }
-      // Refresh spots count
-      fetchSpots();
-    }
   } catch (err) {
-    // API not live — fallback to mailto
+    // Couldn't reach the booking API at all (offline, DNS, timeout, CORS) —
+    // fall back to opening a prefilled email, since nothing was actually booked.
     submitBtn.textContent = 'Reserve My Mat';
     submitBtn.disabled = false;
 
     const body = `Hi Jenny,%0D%0A%0D%0AI'd like to reserve a spot for Saturday's 10:30am class.%0D%0A%0D%0AName: ${encodeURIComponent(data.name)}%0D%0AEmail: ${encodeURIComponent(data.email)}%0D%0APhone: ${encodeURIComponent(data.phone) || 'Not provided'}`;
     window.location.href = `mailto:hello@saturdaymat.com?subject=Saturday%2010%3A30am%20class&body=${body}`;
-    // Show success message with note about email
     form.reset();
     form.style.display = 'none';
     document.querySelector('#successMsg p')?.remove();
     successMsg.innerHTML = 'We opened your email app so you can finish signing up. See you Saturday at 10:30am!';
     successMsg.classList.add('is-visible');
+    return;
   }
+
+  if (res.status === 409) {
+    // Class full (legacy — current API waitlists instead of returning 409)
+    form.style.display = 'none';
+    fullMsg.classList.add('is-visible');
+    return;
+  }
+
+  if (!res.ok) {
+    // The API responded but rejected/failed the request — a real error.
+    // Don't claim success; tell the user and point them at the manual
+    // email fallback link that's always visible on the page.
+    submitBtn.textContent = 'Reserve My Mat';
+    submitBtn.disabled = false;
+    form.style.display = 'none';
+    errorMsg.classList.add('is-visible');
+    return;
+  }
+
+  const result = await res.json();
+  form.reset();
+  form.style.display = 'none';
+  if (result.alreadyBooked) {
+    (result.status === 'Waitlisted' ? waitlistMsg : successMsg).classList.add('is-visible');
+  } else if (result.status === 'Waitlisted') {
+    waitlistMsg.classList.add('is-visible');
+  } else {
+    successMsg.classList.add('is-visible');
+  }
+  // Refresh spots count
+  fetchSpots();
 });
 
 // ── Mailing list form ──
