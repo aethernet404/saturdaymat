@@ -753,7 +753,7 @@ listForm.addEventListener('submit', async (e) => {
 
 // ── Register service worker for PWA ──
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js').then(() => {
+  navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' }).then(() => {
     // Registered
   }).catch(() => {
     // Service worker registration failed — offline browsing won't work
