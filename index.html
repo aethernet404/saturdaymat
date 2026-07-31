@@ -574,12 +574,18 @@ function updateNextClassDate() {
   const el = document.querySelector('.next-class');
   if (!el) return;
   const now = new Date();
-  const target = new Date(now);
-  target.setHours(10, 30, 0, 0);
-  const day = now.getDay();
-  let daysUntil = (6 - day + 7) % 7;
-  if (daysUntil === 0 && now > target) daysUntil = 7;
-  target.setDate(now.getDate() + daysUntil);
+  // Classes start August 22, 2026 — anchor to that date rather than
+  // just "nearest Saturday," so this doesn't show a date before launch.
+  const firstClass = new Date('2026-08-22T10:30:00');
+  let target;
+  if (now <= firstClass) {
+    target = firstClass;
+  } else {
+    target = new Date(firstClass);
+    while (target < now) {
+      target.setDate(target.getDate() + 7);
+    }
+  }
   const dateStr = target.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
   el.innerHTML = `<span class="dot"></span> Next class: Saturday ${dateStr} &bull; 10:30 AM &bull; Downtown Oceanside`;
 }
