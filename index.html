@@ -435,11 +435,7 @@ h1,h2,h3{ font-family:var(--display); font-weight:600; letter-spacing:-.01em; li
 
       <div class="book-card">
         <p class="brand-sm">Saturday Mat</p>
-        <!-- Live spots counter -->
-        <div class="spots-badge available" id="spotsBadge">
-          <span id="spotsCount">—</span> of <span id="spotsCapacity">15</span> spots remaining
-        </div>
-        <ul>
+<ul>
           <li><strong>Saturdays</strong> at 10:30 AM</li>
           <li>Downtown Oceanside</li>
           <li>50 minutes</li>
@@ -448,40 +444,23 @@ h1,h2,h3{ font-family:var(--display); font-weight:600; letter-spacing:-.01em; li
       </div>
 
       <div class="signup-panel" id="signup-form">
-        <!--
-          REPLACE: API_DOMAIN — Ask Devin for the real backend URL.
-          The form POSTs to https://[API_DOMAIN]/book on submit,
-          and fetches spots from https://[API_DOMAIN]/spots on load.
-        -->
-        <form id="signupForm">
-          <div class="field">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required autocomplete="name">
-          </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required autocomplete="email">
-          </div>
-          <div class="field">
-            <label for="classDate">Class Date</label>
-            <select id="classDate" name="classDate" required></select>
-            <p class="hint">Saturdays at 10:30 AM. Upcoming dates only.</p>
-          </div>
-          <div class="field">
-            <label for="phone">Phone <span style="font-weight:400;color:var(--ink-soft)">(optional)</span></label>
-            <input type="tel" id="phone" name="phone" autocomplete="tel">
-            <p class="hint">In case we need to reach you before Saturday.</p>
-          </div>
-          <button type="submit" class="btn btn-coral">Reserve My Mat</button>
-        </form>
-        <div class="form-msg success" id="successMsg">You're on the list — see you Saturday at 10:30am.</div>
-        <div class="form-msg waitlist" id="waitlistMsg">This class is fully booked, but we'll email you if a spot opens up — or you can book a future class.</div>
-        <div class="form-msg full" id="fullMsg">This Saturday's class is full. Check back next week or email Jenny to get on the waitlist.</div>
-        <div class="form-msg error" id="errorMsg">Something didn't go through. You can email Jenny directly below to reserve your spot.</div>
+        <div id="cal-booking-widget"></div>
+        <script type="text/javascript">
+          (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+          Cal("init", { origin: "https://cal.com" });
+          Cal("inline", {
+            elementOrSelector: "#cal-booking-widget",
+            calLink: "saturdaymat/saturday-mat",
+            layout: "month_view"
+          });
+          Cal("ui", {
+            styles: { branding: { brandColor: "#8E9B8A" } },
+            hideEventTypeDetails: false
+          });
+        </script>
 
         <p class="mailto-fallback">
           Booking not working?
-          <!-- REPLACE: real email -->
           <a href="mailto:hello@saturdaymat.com?subject=Saturday%2010%3A30am%20class&body=Hi%20Jenny%2C%20I%27d%20like%20to%20reserve%20a%20spot%20for%20Saturday%27s%2010%3A30am%20class.%0A%0AName%3A%0APhone%3A">Email us to reserve your spot</a>
         </p>
       </div>
@@ -590,7 +569,7 @@ if (videoEl) {
   });
 }
 
-// ── Spots counter (fetches from backend) ──
+// ── Booking API domain (still used for mailing list) ──
 const API_DOMAIN = 'https://api.saturdaymat.com';
 
 function createTimeoutSignal(ms) {
@@ -598,150 +577,6 @@ function createTimeoutSignal(ms) {
   setTimeout(() => controller.abort(), ms);
   return controller.signal;
 }
-
-function getClassSaturdays(count) {
-  const now = new Date();
-  const next = new Date(now);
-  next.setHours(10, 30, 0, 0);
-  const day = now.getDay();
-  let daysUntil = (6 - day + 7) % 7;
-  if (daysUntil === 0 && now >= next) daysUntil = 7;
-  next.setHours(10, 30, 0, 0);
-  next.setDate(now.getDate() + daysUntil);
-  const pad = (n) => String(n).padStart(2, '0');
-  const dates = [];
-  for (let i = 0; i < count; i++) {
-    const d = new Date(next);
-    d.setDate(next.getDate() + 7 * i);
-    const value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-    const label = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-    dates.push({ value, label: `Saturday, ${label} at 10:30 AM` });
-  }
-  return dates;
-}
-
-function populateClassDates() {
-  const select = document.getElementById('classDate');
-  const dates = getClassSaturdays(6);
-  dates.forEach((d) => {
-    const opt = document.createElement('option');
-    opt.value = d.value;
-    opt.textContent = d.label;
-    select.appendChild(opt);
-  });
-}
-
-async function fetchSpots() {
-  const badge = document.getElementById('spotsBadge');
-  const count = document.getElementById('spotsCount');
-  const cap = document.getElementById('spotsCapacity');
-  const select = document.getElementById('classDate');
-  const classDate = select ? select.value : '';
-  try {
-    const res = await fetch(`${API_DOMAIN}/spots?classDate=${encodeURIComponent(classDate)}`, { signal: createTimeoutSignal(5000) });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const remaining = data.spots;
-    const capacity = data.capacity || 15;
-    count.textContent = remaining;
-    if (cap) cap.textContent = capacity;
-    badge.className = 'spots-badge';
-    if (remaining <= 0) {
-      badge.classList.add('full');
-    } else if (remaining <= 3) {
-      badge.classList.add('low');
-    } else {
-      badge.classList.add('available');
-    }
-  } catch (err) {
-    // API not live yet — hide badge
-    badge.style.display = 'none';
-  }
-}
-
-populateClassDates();
-fetchSpots();
-document.getElementById('classDate').addEventListener('change', fetchSpots);
-
-// ── Reservation form ──
-const form = document.getElementById('signupForm');
-const successMsg = document.getElementById('successMsg');
-const fullMsg = document.getElementById('fullMsg');
-const waitlistMsg = document.getElementById('waitlistMsg');
-const errorMsg = document.getElementById('errorMsg');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  // Hide any previous messages
-  document.querySelectorAll('.form-msg').forEach(m => m.classList.remove('is-visible'));
-
-  const data = {
-    name: document.getElementById('name').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    phone: document.getElementById('phone').value.trim(),
-    classDate: document.getElementById('classDate').value
-  };
-
-  const submitBtn = form.querySelector('button[type="submit"]');
-  submitBtn.textContent = 'Reserving…';
-  submitBtn.disabled = true;
-
-  let res;
-  try {
-    res = await fetch(`${API_DOMAIN}/book`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(data),
-      signal: createTimeoutSignal(8000)
-    });
-  } catch (err) {
-    // Couldn't reach the booking API at all (offline, DNS, timeout, CORS) —
-    // fall back to opening a prefilled email, since nothing was actually booked.
-    submitBtn.textContent = 'Reserve My Mat';
-    submitBtn.disabled = false;
-
-    const body = `Hi Jenny,%0D%0A%0D%0AI'd like to reserve a spot for Saturday's 10:30am class.%0D%0A%0D%0AName: ${encodeURIComponent(data.name)}%0D%0AEmail: ${encodeURIComponent(data.email)}%0D%0APhone: ${encodeURIComponent(data.phone) || 'Not provided'}`;
-    window.location.href = `mailto:hello@saturdaymat.com?subject=Saturday%2010%3A30am%20class&body=${body}`;
-    form.reset();
-    form.style.display = 'none';
-    document.querySelector('#successMsg p')?.remove();
-    successMsg.innerHTML = 'We opened your email app so you can finish signing up. See you Saturday at 10:30am!';
-    successMsg.classList.add('is-visible');
-    return;
-  }
-
-  if (res.status === 409) {
-    // Class full (legacy — current API waitlists instead of returning 409)
-    form.style.display = 'none';
-    fullMsg.classList.add('is-visible');
-    return;
-  }
-
-  if (!res.ok) {
-    // The API responded but rejected/failed the request — a real error.
-    // Don't claim success; tell the user and point them at the manual
-    // email fallback link that's always visible on the page.
-    submitBtn.textContent = 'Reserve My Mat';
-    submitBtn.disabled = false;
-    form.style.display = 'none';
-    errorMsg.classList.add('is-visible');
-    return;
-  }
-
-  const result = await res.json();
-  form.reset();
-  form.style.display = 'none';
-  if (result.alreadyBooked) {
-    (result.status === 'Waitlisted' ? waitlistMsg : successMsg).classList.add('is-visible');
-  } else if (result.status === 'Waitlisted') {
-    waitlistMsg.classList.add('is-visible');
-  } else {
-    successMsg.classList.add('is-visible');
-  }
-  // Refresh spots count
-  fetchSpots();
-});
 
 // ── Mailing list form ──
 const listForm = document.getElementById('listForm');
