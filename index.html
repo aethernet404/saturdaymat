@@ -45,6 +45,7 @@
 <link rel="manifest" href="manifest.json" />
 <link rel="icon" type="image/png" href="images/logo.png" />
 <link rel="apple-touch-icon" href="images/logo.png" />
+<link rel="canonical" href="https://saturdaymat.com/">
 
 <!--
 ╔══════════════════════════════════════════════════════════════════════╗
@@ -310,6 +311,70 @@ h1,h2,h3{ font-family:var(--display); font-weight:600; letter-spacing:-.01em; li
 .footer p{ margin:0; font-family:var(--body); font-size:14.5px; letter-spacing:.02em; }
 .footer strong{ color:var(--shell); }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "I've never done yoga. Can I come?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely. Saturday Mat is built for exactly that. Jenny walks you through the basics as class goes — you're never expected to already know what's next."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to bring a mat?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Please bring your own mat and a water bottle if you can. If you don't have one, no worries — limited mats are available, just let us know ahead of time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do I park?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Free street parking on Cleveland Street and surrounding blocks. There's also a public parking garage at 349 N Cleveland St for $5 flat — just a short walk from the studio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How early should I arrive?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aim for 10–15 minutes early so you can get settled before class starts at 10:30."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I wear?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anything you can move and breathe in — leggings, shorts, whatever you'd wear to work out."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's your cancellation policy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cancellation policy coming soon — for now, just email or text if your plans change."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I drop in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. No membership required to start — just reserve your spot for that Saturday and show up."
+      }
+    }
+  ]
+}
+</script>
 </head>
 
 <body>
@@ -347,7 +412,12 @@ h1,h2,h3{ font-family:var(--display); font-weight:600; letter-spacing:-.01em; li
           <div class="next-class"><span class="dot"></span> Next class: Saturday • 10:30 AM • Downtown Oceanside</div>
         </div>
       </div>
-      <div class="hero-photo rise"><img src="images/hero.jpg" alt="Yoga with Jenny — Saturday class in Oceanside, CA"></div>
+      <div class="hero-photo rise">
+        <picture>
+          <source srcset="images/hero.webp" type="image/webp">
+          <img src="images/hero.jpg" alt="Yoga with Jenny — Saturday class in Oceanside, CA">
+        </picture>
+      </div>
     </div>
     <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
       <path d="M0,40 C 240,90 480,0 720,32 C 960,64 1200,10 1440,44 L1440,90 L0,90 Z"></path>
@@ -436,7 +506,10 @@ h1,h2,h3{ font-family:var(--display); font-weight:600; letter-spacing:-.01em; li
           </div>
           <!-- Photo of the space -->
           <div class="loc-photo">
-            <img src="images/hero.jpg" alt="The studio space" loading="lazy">
+            <picture>
+              <source srcset="images/hero.webp" type="image/webp">
+              <img src="images/hero.jpg" alt="The studio space" loading="lazy">
+            </picture>
           </div>
         </div>
         <div class="loc-facts">
