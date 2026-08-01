@@ -33,9 +33,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   // Skip non-GET requests and API calls
   if (event.request.method !== 'GET') return;
-  if (event.request.url.includes('/api/')) return;
 
   const url = new URL(event.request.url);
+  if (url.hostname === 'api.saturdaymat.com') return;
   const isHTML = url.pathname === '/' || url.pathname === '/index.html';
 
   if (isHTML) {
