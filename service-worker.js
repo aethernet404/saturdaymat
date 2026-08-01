@@ -43,8 +43,12 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          const clone = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(event.request, clone));
+          // The Cache API rejects 206 (Partial Content) responses -- only
+          // cache full, successful responses.
+          if (response.ok && response.status !== 206) {
+            const clone = response.clone();
+            caches.open(CACHE).then((cache) => cache.put(event.request, clone));
+          }
           return response;
         })
         .catch(() => caches.match(event.request))
@@ -56,8 +60,12 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => {
       return cached || fetch(event.request).then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE).then((cache) => cache.put(event.request, clone));
+        // Range requests (e.g. video seeking) return 206, which the Cache
+        // API doesn't support storing -- only cache full 200 responses.
+        if (response.ok && response.status !== 206) {
+          const clone = response.clone();
+          caches.open(CACHE).then((cache) => cache.put(event.request, clone));
+        }
         return response;
       }).catch(() => cached);
     })
